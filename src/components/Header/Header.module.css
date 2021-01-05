@@ -1,0 +1,19 @@
+.header {
+    grid-area: header;
+    background-color: aquamarine;
+}
+
+.header img{
+    width: 150px;
+}
+
+.userLogin {
+    float: right;
+    color: orangered;
+}
+
+.userLogin a {
+    float: right;
+    color: orangered;
+    text-decoration: none;
+}

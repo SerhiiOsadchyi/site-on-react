@@ -1,0 +1,14 @@
+.nav {
+    grid-area: navi;
+    background-color: bisque;
+}
+
+.item a{
+    color: saddlebrown;
+    text-decoration: none;
+}
+
+.item a.activeNav {
+    color: cadetblue;
+    text-decoration: none;
+}

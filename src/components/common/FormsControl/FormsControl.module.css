@@ -1,0 +1,18 @@
+.formControl textarea,  .formControl input {
+    margin: 5px;
+}
+
+.formControl div {
+    margin: 1px !important;
+    padding: 1px !important;
+}
+
+.formControl.error textarea,  .formControl.error input {
+    border: 2px solid red;
+}
+
+.formControl.error span {
+    color: red;
+}
+
+

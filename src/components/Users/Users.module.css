@@ -1,0 +1,13 @@
+.avatar img {
+    width: 100px;
+}
+
+.selected {
+    font-weight: 900;
+    background-color: orange;
+}
+
+.content a, button {
+    cursor: pointer;
+    margin-left: 5px;
+}

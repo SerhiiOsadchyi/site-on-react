@@ -1,0 +1,18 @@
+.app-wrapper {
+  width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-areas:
+  'header header'
+  'navi content';
+  grid-template-rows: 100px 1fr;
+  grid-template-columns: 200px 1fr;
+  grid-gap: 5px;
+}
+.app-wrapper div {
+  padding: 10px;
+}
+.app-wrapper-content {
+  grid-area: content;
+  background-color: lavender;
+}

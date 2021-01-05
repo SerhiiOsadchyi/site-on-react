@@ -1,0 +1,27 @@
+.profile textarea,  .formControl input {
+    margin: 5px;
+}
+
+.profile div {
+    margin: 1px !important;
+    padding: 1px !important;
+}
+
+.formControlError {
+    color: red;
+    font-weight: 900;
+}
+
+.formControlError div{
+    padding: 500px !important;
+}
+
+.formControl.error textarea,  .formControl.error input {
+    border: 2px solid red;
+}
+
+.formControlError span {
+    color: red;
+    font-weight: 900;
+    padding-bottom: 10px !important;
+}

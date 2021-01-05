@@ -1,0 +1,10 @@
+.dialogs a{
+    color: saddlebrown;
+    text-decoration: none;
+}
+
+.dialogs .activeNav{
+    color: darkgreen;
+    text-decoration: none;
+}
+

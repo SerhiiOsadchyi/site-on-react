@@ -1,0 +1,12 @@
+.login textarea,  .formControl input {
+    margin: 5px;
+}
+
+.login div {
+    margin: 1px !important;
+    padding: 1px !important;
+}
+
+.formControlError {
+    color: red;
+}
