@@ -1,19 +1,23 @@
 import React, {useState} from 'react';
 import s from './Paginator.module.css';
 
-let Paginator = ({totalCount, pageSize, currentPage, onChangePage}) => {
+type PropsType = {
+    totalCount: number
+    pageSize: number
+    currentPage: number
+    onChangePage: (page: number) => void
+}
+
+let Paginator: React.FC<PropsType> = ({totalCount, pageSize, currentPage, onChangePage}) => {
 
     const [partPages, setPartPages] = useState(1)
     let pages = [];
     let pageCount = Math.ceil(totalCount / pageSize);
 
-    const onChangePagesRange = (way) => {
-
-    }
     for (let p = 1; p <= pageCount; p++) {
         pages.push(p)
     }
-    //debugger
+
     return (
             <div>
                 {(partPages > 1) && <button onClick={ () => { setPartPages (partPages - 1) } }>Prev {pageSize}</button>}
@@ -25,7 +29,6 @@ let Paginator = ({totalCount, pageSize, currentPage, onChangePage}) => {
                         {page}</button>
                 })}
                 {(partPages < (pageCount - 2)) && <button onClick={ () => {
-                    debugger
                     setPartPages (partPages + 1) } }>Next {pageSize}</button>}
             </div>
     )

@@ -1,23 +1,26 @@
 import {profileAPI} from "../API/api";
 import {stopSubmit} from "redux-form";
+import {PhotosType, PostsType, ProfileType} from "../types/types";
 
 const ADD_NEW_POST = 'profile-reducer/ADD-NEW-POST';
 const SET_USER_PROFILE = 'profile-reducer/SET_USER_PROFILE';
 const SET_STATUS = 'profile-reducer/SET_STATUS';
-const NEW_AVATAR_SAVED_SACCESS = 'profile-reducer/NEW_AVATAR_SAVED_SACCESS';
-const NEW_PROFILE_DATA_SAVED_SACCESS = 'profile-reducer/NEW_PROFILE_DATA_SAVED_SACCESS';
+const NEW_AVATAR_SAVED_SUCCESS = 'profile-reducer/NEW_AVATAR_SAVED_SUCCESS';
+const NEW_PROFILE_DATA_SAVED_SUCCESS = 'profile-reducer/NEW_PROFILE_DATA_SAVED_SUCCESS';
 
 const initialState = {
     posts: [
         {id: 0, message: 'Hello, chuvak!'},
         {id: 1, message: 'How are you?'},
         {id: 2, message: 'I\'m fine!'}
-    ],
-    profile: null,
+    ] as Array<PostsType>,
+    profile: null as null | ProfileType,
     status: '---'
 }
 
-const profileReducer = (state = initialState, action) => {
+type initialStateType = typeof initialState
+
+const profileReducer = (state = initialState, action: any): initialStateType => {
     switch (action.type) {
         case ADD_NEW_POST:
             return {
@@ -34,10 +37,10 @@ const profileReducer = (state = initialState, action) => {
                 ...state,
                 status: action.status
             };
-        case NEW_AVATAR_SAVED_SACCESS:
+        case NEW_AVATAR_SAVED_SUCCESS:
             return {
                 ...state,
-                profile: {...state.profile, photos: action.photo}
+                profile: {...state.profile, photos: action.photo} as ProfileType
 
             };
         default:
@@ -45,38 +48,56 @@ const profileReducer = (state = initialState, action) => {
     }
 }
 
-export const addNewPostCreator = (post) => ({type: ADD_NEW_POST, post});
-export const setUserProfile = (profile) => ({type: SET_USER_PROFILE, profile});
-export const setSUserStatus = (status) => ({type: SET_STATUS, status});
-export const updateUserStatusCreator = (status) => ({type: SET_STATUS, status});
-export const newAvatarSavedSaccess = (photo) => ({type: NEW_AVATAR_SAVED_SACCESS, photo});
+type AddNewPostCreator = {
+    type: typeof ADD_NEW_POST,
+    post: PostsType
+}
+export const addNewPostCreator = (post: PostsType): AddNewPostCreator => ({type: ADD_NEW_POST, post});
 
-export const getUserProfile = (userId) => async (dispatch) => {
+type SetUserProfileType = {
+    type: typeof SET_USER_PROFILE,
+    profile: ProfileType
+}
+export const setUserProfile = (profile: ProfileType): SetUserProfileType => ({type: SET_USER_PROFILE, profile});
+
+type SetSUserStatusType = {
+    type: typeof SET_STATUS,
+    status: string
+}
+export const setSUserStatus = (status: string): SetSUserStatusType => ({type: SET_STATUS, status});
+
+type NewAvatarSavedSuccessType = {
+    type: typeof NEW_AVATAR_SAVED_SUCCESS,
+    photo: PhotosType
+}
+export const newAvatarSavedSuccess = (photo: PhotosType): NewAvatarSavedSuccessType => ({type: NEW_AVATAR_SAVED_SUCCESS, photo});
+
+export const getUserProfile = (userId: number) => async (dispatch: any) => {
     let response = await profileAPI.getProfile(userId);
     dispatch(setUserProfile(response.data));
 };
 
-export const getUserStatus = (userId) => async (dispatch) => {
+export const getUserStatus = (userId: number) => async (dispatch: any) => {
     let response = await profileAPI.getStatus(userId);
     dispatch(setSUserStatus(response.data));
 };
 
-export const updateUserStatus = (status) => async (dispatch) => {
+export const updateUserStatus = (status: string) => async (dispatch: any) => {
     let response = await profileAPI.updateStatus(status)
     if (response.data.resultCode === 0) {
-        dispatch(updateUserStatusCreator(status));
+        dispatch(setSUserStatus(status));
     }
 };
 
-export const saveAvatar = (photo) => async (dispatch) => {
+export const saveAvatar = (photo: PhotosType) => async (dispatch: any) => {
     //debugger
     let response = await profileAPI.saveAvatar(photo)
     if (response.data.resultCode === 0) {
-        dispatch(newAvatarSavedSaccess(response.data.data.photos));
+        dispatch(newAvatarSavedSuccess(response.data.data.photos));
     }
 };
 
-export const saveProfileData = (profileData) => async (dispatch, getState) => {
+export const saveProfileData = (profileData: ProfileType) => async (dispatch: any, getState: any) => {
     const userId = getState().userAuthorize.userId;
     let response = await profileAPI.saveProfile(profileData);
     //debugger
