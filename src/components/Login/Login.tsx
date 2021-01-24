@@ -3,10 +3,11 @@ import LoginFormRedux from "./LoginForm";
 import {connect} from "react-redux";
 import {login} from "../../redux/auth-reducer";
 import {Redirect} from "react-router-dom";
+import {AppStateType} from "../../redux/redux-store";
 
-const Login = (props) => {
+const Login: React.FC<MapStateToPropsType & MapDispatchToPropsType> = (props) => {
 
-    let logData = (values) => {
+    let logData = (values: LoginFormValuesType) => {
         let { email, password, rememberMe, captcha } = values;
         props.login(email, password, rememberMe, captcha)
     }
@@ -23,9 +24,25 @@ const Login = (props) => {
         )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: AppStateType) => ({
     isAuth: state.userAuthorize.isAuth,
     captchaUrl: state.userAuthorize.captchaUrl
 });
 
 export default connect( mapStateToProps, {login} )(Login);
+
+type MapStateToPropsType = {
+    isAuth: boolean
+    captchaUrl: string | null
+}
+
+export type LoginFormValuesType = {
+    email: string,
+    password: string,
+    rememberMe: boolean,
+    captcha: string
+}
+
+type MapDispatchToPropsType = {
+    login: (email: string, password: string, rememberMe: boolean, captcha: string) => void
+}

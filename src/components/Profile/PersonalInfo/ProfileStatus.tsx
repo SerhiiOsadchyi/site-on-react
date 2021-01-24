@@ -1,5 +1,8 @@
 import React, {ChangeEvent} from 'react';
 
+
+///  !!!  This component never use now   !!!  \\\
+
 type PropsType = {
     status: string
     updateUserStatus: (status: string) => void
