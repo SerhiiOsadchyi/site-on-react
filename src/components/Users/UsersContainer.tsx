@@ -1,14 +1,12 @@
 import React from 'react';
-import {actions, follow, unfollow, getUsers, onClickCurrentPage} from "../../redux/users-reducer";
+import {follow, unfollow, getUsers, onClickCurrentPage} from "../../redux/users-reducer";
 import Users from "./Users";
 import Preloader from "../common/Preloader/Preloader";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
-import {compose} from "redux";
 import {connect, ConnectedProps} from "react-redux";
 import {
     getFetchedState,
     getFollowInProgressStatus,
-    //getFollowProgressingState,
     getPageSize,
     getThisPage,
     getTotalCount,
@@ -25,14 +23,6 @@ type MapStatePropsType = {
     followInProgressStatus: Array<number>
     users: Array<UserType>
 }
-/*type MapDispatchPropsType = {
-    getUsers: (currentPage: number, pageSize: number) => void
-    onClickCurrentPage: (pageNumber: number) => void
-    unfollow: () => void
-    follow: () => void
-}*/
-
-//type PropsType = MapStatePropsType & MapDispatchPropsType
 
 class UsersContainer extends React.Component<PropsFromRedux> {
 
@@ -46,7 +36,6 @@ class UsersContainer extends React.Component<PropsFromRedux> {
     }
 
     render() {
-        //debugger;
         return <>
             {this.props.isFetched ? null : <Preloader/>}
 
@@ -57,7 +46,6 @@ class UsersContainer extends React.Component<PropsFromRedux> {
                     pageSize={this.props.pageSize}
                     follow={this.props.follow}
                     onChangePage={this.onChangePage}
-                //followProgressing={this.props.followProgressing}
                     followInProgressStatus={this.props.followInProgressStatus}
             />
         </>
@@ -71,11 +59,32 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
         pageSize: getPageSize(state),
         currentPage: getThisPage(state),
         isFetched: getFetchedState(state),
-        //followProgressing: getFollowProgressingState(state),
         followInProgressStatus: getFollowInProgressStatus(state)
     }
 
 };
+
+const redirectUsersContainer = withAuthRedirect(UsersContainer)
+const connector = connect(mapStateToProps, {
+    follow,
+    unfollow,
+    onClickCurrentPage,
+    getUsers
+})
+
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+export default connector(redirectUsersContainer);
+//export default compose(connector, withAuthRedirect)(UsersContainer);
+
+/*type MapDispatchPropsType = {
+    getUsers: (currentPage: number, pageSize: number) => void
+    onClickCurrentPage: (pageNumber: number) => void
+    unfollow: () => void
+    follow: () => void
+}*/
+
+//type PropsType = MapStatePropsType & MapDispatchPropsType
 
 /*let mapStateToProps = (state) => {
     return {
@@ -99,16 +108,3 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
         getUsers
     }),
     withAuthRedirect)(UsersContainer);*/
-
-const redirectUsersContainer = withAuthRedirect(UsersContainer)
-const connector = connect(mapStateToProps, {
-    follow,
-    unfollow,
-    onClickCurrentPage,
-    getUsers
-})
-
-type PropsFromRedux = ConnectedProps<typeof connector>
-
-export default connector(redirectUsersContainer);
-//export default compose(connector, withAuthRedirect)(UsersContainer);
