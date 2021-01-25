@@ -3,7 +3,7 @@ import {updateObjectArrayOverlap} from "../utils/object-helpers";
 import {UserType} from "../types/types";
 import {Dispatch} from "redux";
 import {ThunkAction} from "redux-thunk";
-import {AppStateType} from "./redux-store";
+import {AppStateType, InferActionsType} from "./redux-store";
 
 const ADD_NEW_USER = 'users-reducer/ADD-NEW-USER';
 const FOLLOW = 'users-reducer/FOLLOW';
@@ -23,7 +23,7 @@ const initialState = {
 
 type InitialStateType = typeof initialState
 
-const usersReducer = (state = initialState, action: ActionsType): InitialStateType => {
+const usersReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
         case ADD_NEW_USER:
             return {
@@ -35,13 +35,13 @@ const usersReducer = (state = initialState, action: ActionsType): InitialStateTy
         case FOLLOW:
             return {
                 ...state,
-                users: updateObjectArrayOverlap( state.users, action.userId,'id',{followed: true} )
+                users: updateObjectArrayOverlap(state.users, action.userId, 'id', {followed: true})
 
             };
         case UNFOLLOW:
             return {
                 ...state,
-                users: updateObjectArrayOverlap( state.users, action.userId, 'id',{followed: false} )
+                users: updateObjectArrayOverlap(state.users, action.userId, 'id', {followed: false})
             };
         case CURRENT_PAGE_CHANGED:
             return {
@@ -65,87 +65,66 @@ const usersReducer = (state = initialState, action: ActionsType): InitialStateTy
     }
 }
 
-///  Actions  ///
+export const actions = {
+    acceptFollow: (userId: number) => <const>({type: FOLLOW, userId}),
 
-type AcceptFollowType = {
-    type: typeof FOLLOW,
-    userId: number
-}
-export const acceptFollow = (userId: number): AcceptFollowType => ({type: FOLLOW, userId});
+    acceptUnfollow: (userId: number) => <const>({type: UNFOLLOW, userId}),
 
-type AcceptUnfollowType = {
-    type: typeof UNFOLLOW,
-    userId: number
-}
-export const acceptUnfollow = (userId: number): AcceptUnfollowType => ({type: UNFOLLOW, userId});
+    addNewUsers: (data: { items: Array<UserType>, totalCount: number }) => <const>(
+        {type: ADD_NEW_USER, users: data.items, totalCount: data.totalCount}),
 
-type AddNewUsersType = {
-    type: typeof ADD_NEW_USER,
-    users: Array<UserType>,
-    totalCount: number
-}
-type AddNewUsersDataType = {
-    items: Array<UserType>,
-    totalCount: number
-}
-export const addNewUsers = (data: AddNewUsersDataType): AddNewUsersType => (
-    {type: ADD_NEW_USER, users: data.items, totalCount: data.totalCount});
+    setCurrentPage: (page: number) => <const>({type: CURRENT_PAGE_CHANGED, page}),
 
-type OnClickCurrentPageType = {
-    type: typeof CURRENT_PAGE_CHANGED,
-    page: number
-}
-export const onClickCurrentPage = (page: number): OnClickCurrentPageType => ({type: CURRENT_PAGE_CHANGED, page});
+    toggleIsFetched: (isFetched: boolean) => <const>({type: IS_FETCHED, isFetched}),
 
-type ToggleIsFetchedType = {
-    type: typeof IS_FETCHED,
-    isFetched: boolean
-}
-export const toggleIsFetched = (isFetched: boolean): ToggleIsFetchedType => ({type: IS_FETCHED, isFetched });
 
-type FollowProgressingType = {
-    type: typeof FOLLOW_IN_PROGRESS,
-    isFetched: boolean,
-    userId: number
+    followProgressing: (isFetched: boolean, userId: number) => <const>({
+        type: FOLLOW_IN_PROGRESS, isFetched, userId
+    })
 }
-export const followProgressing = (isFetched: boolean, userId: number): FollowProgressingType => ({
-    type: FOLLOW_IN_PROGRESS, isFetched, userId });
-
-type ActionsType = AcceptFollowType | AcceptUnfollowType | AddNewUsersType | OnClickCurrentPageType |
-    ToggleIsFetchedType | FollowProgressingType
 
 /// Thunks ///
 
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
 
-export let getUsers = (page: number, pageSize: number): ThunkType =>
+export let getUsers = (page: number, pageSize: number): ThunkTypes =>
     async (dispatch) => {
-    dispatch(toggleIsFetched(false));
-    let data = await usersAPI.getUsers(page, pageSize)
-    dispatch(addNewUsers(data));
-    dispatch(toggleIsFetched(true))
-};
+        dispatch(actions.toggleIsFetched(false));
+        let data = await usersAPI.getUsers(page, pageSize)
+        dispatch(actions.addNewUsers(data));
+        dispatch(actions.toggleIsFetched(true))
+    };
 
-let _followUnfollowSwitch = async (dispatch: Dispatch<ActionsType>,
-                                  userId: number,
-                                  followCase: any,
-                                  actionCreator: (userId: number) => AcceptFollowType | AcceptUnfollowType) => {
-    dispatch(followProgressing(true, userId));
+export let onClickCurrentPage = (page: number): ThunkTypes =>
+    async (dispatch) => {
+        dispatch(actions.setCurrentPage(page))
+    }
+
+export const follow = (userId: number): ThunkTypes => async (dispatch) => {
+    _followUnfollowSwitch(dispatch, userId, usersAPI.followUser, actions.acceptFollow);
+}
+
+export const unfollow = (userId: number): ThunkTypes => async (dispatch) => {
+    _followUnfollowSwitch(dispatch, userId, usersAPI.unfollowUser, actions.acceptUnfollow);
+}
+
+let _followUnfollowSwitch = async (dispatch: Dispatch<ActionsTypes>,
+                                   userId: number,
+                                   followCase: any,
+                                   actionCreator: (userId: number) => ActionsTypes) => {
+    dispatch(actions.followProgressing(true, userId));
     let data = await followCase(userId);
 
     if (data.resultCode === 0) {
         dispatch(actionCreator(userId))
     }
 
-    dispatch(followProgressing(false, userId));
-}
-
-export const follow = (userId: number): ThunkType => async (dispatch) => {
-    _followUnfollowSwitch (dispatch, userId, usersAPI.followUser, acceptFollow);
-}
-
-export const unfollow = (userId: number): ThunkType => async (dispatch) => {
-    _followUnfollowSwitch (dispatch, userId, usersAPI.unfollowUser, acceptUnfollow);
+    dispatch(actions.followProgressing(false, userId));
 }
 
 export default usersReducer;
+
+///  Types \\\
+
+type ActionsTypes = ReturnType<InferActionsType<typeof actions>>
+
+type ThunkTypes = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>

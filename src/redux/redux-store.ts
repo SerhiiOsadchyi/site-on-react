@@ -16,8 +16,11 @@ const rootReducer = combineReducers({
     app: appReducer
 })
 
-type RootReducerType = typeof rootReducer
-export type AppStateType = ReturnType<RootReducerType>
+//type RootReducerType = typeof rootReducer
+export type AppStateType = ReturnType<typeof rootReducer>
+
+export type InferActionsType<T> = T extends { [key: string]: infer U } ? U : never;
+
 
 //let state: AppStateType
 

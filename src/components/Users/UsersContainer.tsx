@@ -1,5 +1,5 @@
 import React from 'react';
-import {follow, onClickCurrentPage, unfollow, followProgressing, getUsers} from "../../redux/users-reducer";
+import {actions, follow, unfollow, getUsers, onClickCurrentPage} from "../../redux/users-reducer";
 import Users from "./Users";
 import Preloader from "../common/Preloader/Preloader";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
@@ -105,7 +105,6 @@ const connector = connect(mapStateToProps, {
     follow,
     unfollow,
     onClickCurrentPage,
-    followProgressing,
     getUsers
 })
 
