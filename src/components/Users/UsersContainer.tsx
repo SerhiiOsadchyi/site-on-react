@@ -12,7 +12,7 @@ import {
     getTotalCount,
     getUsersSelector
 } from "../../redux/users-selector";
-import {UserType} from "../../types/types";
+import {UserType} from "../../types/common-types";
 import {AppStateType} from "../../redux/redux-store";
 
 type MapStatePropsType = {

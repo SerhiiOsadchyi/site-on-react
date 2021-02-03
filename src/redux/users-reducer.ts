@@ -1,9 +1,9 @@
-import {usersAPI} from "../API/api";
 import {updateObjectArrayOverlap} from "../utils/object-helpers";
-import {UserType} from "../types/types";
+import {UserType} from "../types/common-types";
 import {Dispatch} from "redux";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType, InferActionsType} from "./redux-store";
+import {usersAPI} from "../API/users-api";
 
 const ADD_NEW_USER = 'users-reducer/ADD-NEW-USER';
 const FOLLOW = 'users-reducer/FOLLOW';

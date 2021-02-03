@@ -1,7 +1,9 @@
-import {authAPI, ResultCodeForCaptcha, ResultCodes, securityAPI} from "../API/api";
 import {stopSubmit} from "redux-form";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
+import {authAPI} from "../API/auth-api";
+import {securityAPI} from "../API/security-api";
+import {ResultCodeForCaptcha, ResultCodes } from "../types/type-api";
 
 const SET_USER_DATA = 'auth-reducer/SET_USER_DATA';
 const SET_CAPTCHA_URL = 'auth-reducer/SET_CAPTCHA_URL';
