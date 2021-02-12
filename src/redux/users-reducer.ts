@@ -83,9 +83,6 @@ export const actions = {
     })
 }
 
-/// Thunks ///
-
-
 export let getUsers = (page: number, pageSize: number): ThunkTypes =>
     async (dispatch) => {
         dispatch(actions.toggleIsFetched(false));
@@ -125,6 +122,6 @@ export default usersReducer;
 
 ///  Types \\\
 
-type ActionsTypes = ReturnType<InferActionsType<typeof actions>>
+type ActionsTypes = InferActionsType<typeof actions>
 
 type ThunkTypes = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>

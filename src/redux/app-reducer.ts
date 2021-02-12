@@ -1,6 +1,7 @@
 import {authMe} from "./auth-reducer"
 import {ThunkAction} from "redux-thunk";
-import {AppStateType} from "./redux-store";
+import {AppStateType, BaseThunkType, InferActionsType} from "./redux-store";
+import {FormAction} from "redux-form/lib/actions";
 
 const SET_INITIALIZED = 'app-reducer//SET_INITIALIZED'
 
@@ -24,19 +25,17 @@ const appReducer = (state = initialState, action: ActionsType): InitialStateType
     }
 }
 
-type SetInitializedSuccess = {
-    type: typeof SET_INITIALIZED
+const actions = {
+    setInitializedSuccess: () => ({type: SET_INITIALIZED} as const)
 }
-export const setInitializedSuccess = (): SetInitializedSuccess => ({type: SET_INITIALIZED});
-
-type ActionsType = SetInitializedSuccess
-
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
 
 export const authorizedUserSuccess = (): ThunkType => async (dispatch) => {
     let promise = dispatch(authMe());
     await Promise.all([promise])
-    dispatch(setInitializedSuccess());
+    dispatch(actions.setInitializedSuccess());
 }
 
 export default appReducer;
+
+type ActionsType = InferActionsType<typeof actions>
+type ThunkType = BaseThunkType<ActionsType>
