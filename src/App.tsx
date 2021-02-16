@@ -11,12 +11,13 @@ import {compose} from "redux";
 import {connect} from "react-redux";
 import {authorizedUserSuccess} from "./redux/app-reducer";
 import Preloader from "./components/common/Preloader/Preloader";
+import {AppStateType} from "./redux/redux-store";
 import {withSuspense} from "./hoc/withSuspense";
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 
-class App extends React.Component {
+class App extends React.Component<StatePropsType & DispatchPropsType> {
     componentDidMount() {
         this.props.authorizedUserSuccess()
     }
@@ -24,7 +25,7 @@ class App extends React.Component {
     render() {
         //debugger
         if (!this.props.initializedSuccess) {
-            return <Preloader/>
+            return <Preloader />
         }
         return (
             <div className='app-wrapper'>
@@ -41,14 +42,22 @@ class App extends React.Component {
                     </Switch>
                 </div>
             </div>
-        );
+        )
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: AppStateType) => ({
     initializedSuccess: state.app.initializedSuccess
 })
 export default compose(
     withRouter,
     connect(mapStateToProps, {authorizedUserSuccess})
 )(App);
+
+type StatePropsType = {
+    initializedSuccess: boolean
+}
+
+type DispatchPropsType = {
+    authorizedUserSuccess: () => void
+}
