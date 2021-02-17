@@ -1,19 +1,20 @@
-import React from 'react';
+import React, {FC} from 'react';
 import s from './Dialogs.module.css';
 import Dialog from "./Dialog/Dialog";
 import Message from "./Message/Message";
-import LoginFormRedux from "./NewMessage";
+import DialogsFormRedux from "./NewMessage";
+import {DialogsType, DialogType, MessagesType} from "../../types/dialogs-types";
 
-const Dialogs = (props) => {
+const Dialogs: FC<DialogsPropsType> = (props) => {
 
-    let onAddMessage = (value) => {
+    let onAddMessage = (value: DialogsFormValueType) => {
         props.addMessage(value.message);
     };
     let dialogs = props.dialogs.map((dialog) => {
         return <Dialog id={dialog.id} name={dialog.name} key={dialog.id} />
     });
     let messages = props.messages.map((message) => {
-            return <Message message={message.message} key={message.id}/>
+            return <Message message={message.message} key={message.id} id={message.id} />
         }
     );
 
@@ -28,7 +29,7 @@ const Dialogs = (props) => {
                 </div>
                 <div>
                     <h3>New Message</h3>
-                    <LoginFormRedux onSubmit={onAddMessage}  />
+                    <DialogsFormRedux onSubmit={onAddMessage}  />
                 </div>
 
             </div>
@@ -38,3 +39,13 @@ const Dialogs = (props) => {
 };
 
 export default Dialogs;
+
+export type DialogsFormValueType = {
+    message: string
+}
+
+type DialogsOwnProps = {
+    addMessage: (message: string) => void
+}
+
+type DialogsPropsType = DialogsType & MessagesType & DialogsOwnProps

@@ -1,6 +1,6 @@
 import {instance} from "./api";
 import {APIResponseType} from "../types/type-api";
-import {GetUsersType} from "../types/common-types";
+import {GetUsersType} from "../types/users-types";
 
 export const usersAPI = {
     getUsers(currentPage = 1, pageSize = 5) {

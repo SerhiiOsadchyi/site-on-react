@@ -1,6 +1,6 @@
-import {PhotosType, ProfileType} from "../types/common-types";
 import {instance} from "./api";
 import {APIResponseType} from "../types/type-api";
+import {PhotosType, ProfileType} from "../types/profile-types";
 
 export const profileAPI = {
     getProfile(userId: number) {

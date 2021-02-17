@@ -1,6 +1,6 @@
 import {instance} from "./api";
 import {APIResponseType, ResultCodeForCaptcha, ResultCodes} from "../types/type-api";
-import { GetUsersType } from "../types/common-types";
+import {GetUsersType} from "../types/users-types";
 
 export const authAPI = {
     me() {

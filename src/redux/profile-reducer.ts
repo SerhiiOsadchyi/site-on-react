@@ -1,8 +1,9 @@
 import {stopSubmit} from "redux-form";
-import {PhotosType, PostsType, ProfileType} from "../types/common-types";
+import {PostsType} from "../types/common-types";
 import {profileAPI} from "../API/profile-api";
 import {BaseThunkType, InferActionsType} from "./redux-store";
 import {FormAction} from "redux-form/lib/actions";
+import {PhotosType, ProfileType} from "../types/profile-types";
 
 const ADD_NEW_POST = 'profile-reducer/ADD-NEW-POST';
 const SET_USER_PROFILE = 'profile-reducer/SET_USER_PROFILE';

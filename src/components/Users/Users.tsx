@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import s from './Users.module.css';
 import Paginator from "../common/Paginator/Paginator";
 import User from "./User";
-import { UserType } from '../../types/common-types';
+import {UserType} from "../../types/users-types";
 
 type PropsType = {
     totalCount: number
