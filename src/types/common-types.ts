@@ -1,4 +1,4 @@
-export type PostsType = {
+export type PostType = {
     id: number,
     message: string
 }

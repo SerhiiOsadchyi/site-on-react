@@ -7,14 +7,17 @@ import {
     saveProfileData,
     updateUserStatus
 } from "../../redux/profile-reducer";
-import {withRouter} from "react-router-dom";
+import {RouteComponentProps, withRouter} from "react-router-dom";
 import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {connect} from "react-redux";
+import {AppStateType} from "../../redux/redux-store";
+import {ProfileType} from "../../types/profile-types";
 
-class ProfileContainer extends React.Component {
+class ProfileContainer extends React.Component<PropsType> {
+
     refreshProfilePage() {
-        let userId = this.props.match.params.userId;
+        let userId: number | null = +this.props.match.params.userId;
         if (!userId) {
             userId = this.props.userAuthorizedId;
         }
@@ -26,14 +29,13 @@ class ProfileContainer extends React.Component {
         this.refreshProfilePage();
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps: PropsType, prevState: PropsType) {
         if (this.props.match.params.userId !== prevProps.match.params.userId) {
             this.refreshProfilePage();
         }
     }
 
     render() {
-        //debugger;
         return (
             <Profile isAuthUser={!this.props.match.params.userId}
                      status={this.props.status}
@@ -45,16 +47,35 @@ class ProfileContainer extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: AppStateType) => ({
     profile: state.profilePage.profile,
     status: state.profilePage.status,
-    saveAvatar: state.profilePage.saveAvatar,
-    saveProfileData: state.profilePage.saveProfileData,
+    //saveAvatar: state.profilePage.saveAvatar,
+    //saveProfileData: state.profilePage.saveProfileData,
     userAuthorizedId: state.userAuthorize.userId
 });
 
-export default compose(
+export default compose<React.ComponentType>(
     connect(mapStateToProps, {getUserProfile, getUserStatus, updateUserStatus, saveAvatar, saveProfileData}),
     withRouter,
     withAuthRedirect
 )(ProfileContainer);
+
+type StatePropsType = {
+    profile: ProfileType| null,
+    status: string,
+    userAuthorizedId: number
+}
+type DispatchPropsType = {
+    getUserProfile: (userId: number) => void,
+    getUserStatus:  (userId: number) => void,
+    updateUserStatus:  (status: string) => void,
+    saveAvatar: (photo: File) => void,
+    saveProfileData: (profileData: ProfileType) => Promise<void>
+}
+type RouterParamsType = {
+    userId: string;
+};
+type RouterParamsProps = RouteComponentProps<RouterParamsType>;
+
+type PropsType = StatePropsType & DispatchPropsType & RouterParamsProps

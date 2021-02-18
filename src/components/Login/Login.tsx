@@ -31,18 +31,16 @@ const mapStateToProps = (state: AppStateType) => ({
 
 export default connect( mapStateToProps, {login} )(Login);
 
-type MapStateToPropsType = {
-    isAuth: boolean
-    captchaUrl: string | null
-}
-
 export type LoginFormValuesType = {
     email: string,
     password: string,
     rememberMe: boolean,
     captcha: string
 }
-
+type MapStateToPropsType = {
+    isAuth: boolean
+    captchaUrl: string | null
+}
 type MapDispatchToPropsType = {
     login: (email: string, password: string, rememberMe: boolean, captcha: string) => void
 }

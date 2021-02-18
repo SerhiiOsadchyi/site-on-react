@@ -12,3 +12,10 @@ export type GetUsersType = {
     totalCount: number
     error: string | null
 }
+
+export type UserPropsType = {
+    user: UserType,
+    followInProgressStatus: Array<number>,
+    unfollow: (userId: number) => void,
+    follow: (userId: number) => void
+}

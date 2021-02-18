@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {FC} from 'react';
 import s from './Profile.module.css';
 import PersonalInfo from "./PersonalInfo/PersonalInfo";
 import MyPostsContainer from "./MyPosts/MyPostsContainer";
+import {ProfilePropsTypePromise} from "../../types/profile-types";
 
-const Profile = (props) => {
-    //debugger;
+const Profile: FC<ProfilePropsTypePromise> = (props) => {
+
     return (
         <div className={s.content}>
             <PersonalInfo
@@ -21,3 +22,4 @@ const Profile = (props) => {
 };
 
 export default Profile;
+

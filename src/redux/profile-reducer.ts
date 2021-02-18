@@ -1,5 +1,5 @@
 import {stopSubmit} from "redux-form";
-import {PostsType} from "../types/common-types";
+import {PostType} from "../types/common-types";
 import {profileAPI} from "../API/profile-api";
 import {BaseThunkType, InferActionsType} from "./redux-store";
 import {FormAction} from "redux-form/lib/actions";
@@ -15,9 +15,9 @@ const initialState = {
         {id: 0, message: 'Hello, chuvak!'},
         {id: 1, message: 'How are you?'},
         {id: 2, message: 'I\'m fine!'}
-    ] as Array<PostsType>,
+    ] as Array<PostType>,
     profile: null as null | ProfileType,
-    status: '---'
+    status: '---',
 }
 
 const profileReducer = (state = initialState, action: ActionsType): initialStateType => {
@@ -25,7 +25,7 @@ const profileReducer = (state = initialState, action: ActionsType): initialState
         case ADD_NEW_POST:
             return {
                 ...state,
-                posts: [...state.posts, {id: 3, message: action.post}]
+                posts: [...state.posts, {id: 3, message: action.post}],
             };
         case SET_USER_PROFILE:
             return {
@@ -49,7 +49,7 @@ const profileReducer = (state = initialState, action: ActionsType): initialState
 }
 
 export const actions = {
-    addNewPostCreator: (post: string) => ({type: ADD_NEW_POST, post} as const),
+    addNewPost: (post: string) => ({type: ADD_NEW_POST, post} as const),
     setUserProfile: (profile: ProfileType) => ({type: SET_USER_PROFILE, profile} as const),
     setSUserStatus: (status: string) => ({type: SET_STATUS, status} as const),
     newAvatarSavedSuccess: (photo: PhotosType) => ({type: NEW_AVATAR_SAVED_SUCCESS, photo} as const),
@@ -100,5 +100,5 @@ export const saveProfileData = (profileData: ProfileType): ThunkType => async (d
 export default profileReducer;
 
 type initialStateType = typeof initialState;
-type ActionsType = InferActionsType<typeof actions>;
+export type ActionsType = InferActionsType<typeof actions>;
 type ThunkType = BaseThunkType<ActionsType | FormAction>

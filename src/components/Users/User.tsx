@@ -2,8 +2,9 @@ import React from 'react';
 import s from './Users.module.css';
 import {NavLink} from "react-router-dom";
 import userPhoto from '../../assets/image/User-icon.png'
+import {UserPropsType} from "../../types/users-types";
 
-let User = ({user, followInProgressStatus, unfollow, follow}) => {
+let User: React.FC<UserPropsType> = ({user, followInProgressStatus, unfollow, follow}) => {
 
     return (
         <div key={user.id}>
@@ -38,3 +39,4 @@ let User = ({user, followInProgressStatus, unfollow, follow}) => {
 }
 
 export default User;
+

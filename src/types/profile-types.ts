@@ -18,5 +18,22 @@ export type ProfileType = {
     lookingForAJobDescription: string
     fullName: string
     contacts: ContactsType,
-    photo: PhotosType
+    photos: PhotosType,
+    aboutMe: string
+}
+export type ProfilePropsType = {
+    isAuthUser: boolean,
+    profile: ProfileType | null,
+    status: string,
+    updateUserStatus: (status: string) => void,
+    saveAvatar: (photo: File) => void,
+    saveProfileData: (profileData: ProfileType) => void
+}
+export type ProfilePropsTypePromise = {
+    isAuthUser: boolean,
+    profile: ProfileType | null,
+    status: string,
+    updateUserStatus: (status: string) => void,
+    saveAvatar: (photo: File) => void,
+    saveProfileData: (profileData: ProfileType) => Promise<void>
 }

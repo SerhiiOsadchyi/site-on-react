@@ -7,7 +7,7 @@ import {LoginFormValuesType} from "./Login";
 
 const maxLength20 = maxLength(20);
 
-let LoginForm: React.FC<InjectedFormProps<LoginFormValuesType, LoginFormOwnProps> & LoginFormOwnProps> = ({handleSubmit, error, captchaUrl}) => {
+let LoginForm: React.FC<InjectedFormProps<LoginFormValuesType, LoginFormOwnPropsType> & LoginFormOwnPropsType> = ({handleSubmit, error, captchaUrl}) => {
     //debugger;
     return (
         <form onSubmit={handleSubmit} className={styles.login}>
@@ -37,10 +37,10 @@ let LoginForm: React.FC<InjectedFormProps<LoginFormValuesType, LoginFormOwnProps
     )
 };
 
-let LoginFormRedux = reduxForm<LoginFormValuesType, LoginFormOwnProps>({form: 'login'})(LoginForm);
+let LoginFormRedux = reduxForm<LoginFormValuesType, LoginFormOwnPropsType>({form: 'login'})(LoginForm);
 
 export default LoginFormRedux;
 
-type LoginFormOwnProps = {
+type LoginFormOwnPropsType = {
     captchaUrl: string | null
 }
