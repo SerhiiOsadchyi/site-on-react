@@ -1,20 +1,22 @@
-import React from 'react';
-import {follow, unfollow, getUsers, onClickCurrentPage} from "../../redux/users-reducer";
-import Users from "./Users";
+import React, {FC} from 'react';
 import Preloader from "../common/Preloader/Preloader";
-import {withAuthRedirect} from "../../hoc/withAuthRedirect";
-import {connect, ConnectedProps} from "react-redux";
-import {
-    getFetchedState,
-    getFollowInProgressStatus,
-    getPageSize,
-    getThisPage,
-    getTotalCount,
-    getUsersSelector
-} from "../../redux/users-selector";
-import {AppStateType} from "../../redux/redux-store";
-import {UserType} from "../../types/users-types";
+import {useSelector} from "react-redux";
+import {getFetchedState} from "../../redux/users-selector";
+import Users from "./Users";
 
+
+export const UsersPage: FC = (props) => {
+
+    const isFetched = useSelector(getFetchedState);
+
+    return (<>
+           {isFetched ? null : <Preloader/>}
+            < Users/>
+        </>
+    )
+}
+
+/*
 type MapStatePropsType = {
     currentPage: number
     pageSize: number
@@ -39,8 +41,7 @@ class UsersContainer extends React.Component<PropsFromRedux> {
         return <>
             {this.props.isFetched ? null : <Preloader/>}
 
-            < Users users={this.props.users}
-                    unfollow={this.props.unfollow}
+            < Users unfollow={this.props.unfollow}
                     currentPage={this.props.currentPage}
                     totalCount={this.props.totalCount}
                     pageSize={this.props.pageSize}
@@ -74,7 +75,7 @@ const connector = connect(mapStateToProps, {
 
 type PropsFromRedux = ConnectedProps<typeof connector>
 
-export default connector(redirectUsersContainer);
+export default connector(redirectUsersContainer);*/
 //export default compose(connector, withAuthRedirect)(UsersContainer);
 
 /*type MapDispatchPropsType = {
